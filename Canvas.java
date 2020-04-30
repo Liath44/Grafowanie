@@ -7,6 +7,8 @@ import java.util.Scanner;
 import java.io.File;
 import java.awt.Graphics;
 
+//TODO: change class name - Canvas
+
 public class Canvas extends JPanel
     {
     private AbsGraph v;
@@ -105,6 +107,8 @@ public class Canvas extends JPanel
         scanner.close();
         }
 
+    //TODO: close in finally (main)
+    //TODO: check try with resources
     public void exportGraph(String path) throws IOException
         {
         filewriter = new FileWriter(path);
