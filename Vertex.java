@@ -75,6 +75,21 @@ public class Vertex
         return neighbours.size();
         }
 
+    public void visit()
+        {
+        wasvisited = true;
+        }
+
+    public void unvisit()
+        {
+        wasvisited = false;
+        }
+
+    public boolean wasVisited()
+        {
+        return wasvisited;
+        }
+
 	public Vertex(int index, int x, int y)
         {
         this.x = x;

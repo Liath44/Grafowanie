@@ -52,6 +52,46 @@ public class Graph extends AbsGraph
         edges.remove(i);
         }
 
+    public int graphDegree()
+        {
+        return 0;
+        }
+
+    public ArrayList<Vertex> findComponents()
+        {
+        return null;
+        }
+
+    public boolean isTree()
+        {
+        return false;
+        }
+
+    public AbsGraph findComplementGraph()
+        {
+        return null;
+        }
+
+    public ArrayList<Vertex> getHamiltonianPath()
+        {
+        return null;
+        }
+
+    public ArrayList<AbsEdge> getEulerPath()
+        {
+        return null;
+        }
+
+    public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)
+        {
+        return null;
+        }
+
+    public boolean isComplete()
+        {
+        return false;
+        }
+
     public Graph()
         {
         super();

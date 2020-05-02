@@ -134,11 +134,50 @@ public abstract class AbsGraph
         return edgeExists(edges, ver1, ver2);
         }
 
+    public void unvisitEdges()
+        {
+        for(int i = 0; i < edges.size(); i++)
+            {
+            edges.get(i).unvisit();
+            }
+        }
+
+    public void unvisitVertexes()
+        {
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            vertexes.get(i).unvisit();
+            }
+        }
+
+    public ArrayList<Vertex> findShortestPath(int beg, int end)
+        {
+        return findShortestPath(vertexes.get(beg), vertexes.get(end));
+        }
+
     public abstract void addEdge(Vertex u, Vertex v);
-
     public abstract String getGraphType();
-
     public abstract void removeEdge(int i);
+
+    //https://en.wikipedia.org/wiki/Degree_(graph_theory)
+    public abstract int graphDegree();
+    //https://en.wikipedia.org/wiki/Component_(graph_theory)
+    public abstract ArrayList<Vertex> findComponents();
+    //https://pl.wikipedia.org/wiki/Drzewo_(matematyka)
+    public abstract boolean isTree();
+    //https://en.wikipedia.org/wiki/Complement_graph
+    public abstract AbsGraph findComplementGraph();
+    //https://pl.wikipedia.org/wiki/Graf_hamiltonowski
+    //https://pl.wikipedia.org/wiki/Algorytm_Fleury%E2%80%99ego
+    public abstract ArrayList<Vertex> getHamiltonianPath();
+    //https://pl.wikipedia.org/wiki/Graf_eulerowski
+    //https://pl.wikipedia.org/wiki/Cykl_Eulera
+    public abstract ArrayList<AbsEdge> getEulerPath();
+    //https://pl.wikipedia.org/wiki/Problem_najkr%C3%B3tszej_%C5%9Bcie%C5%BCki
+    public abstract ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end);
+    //https://pl.wikipedia.org/wiki/Graf_pe%C5%82ny
+    public abstract boolean isComplete();
+
 
     public AbsGraph()
         {

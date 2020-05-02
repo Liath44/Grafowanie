@@ -23,6 +23,21 @@ public abstract class AbsEdge
         return v;
         }
 
+    public void visit()
+        {
+        wasvisited = true;
+        }
+
+    public void unvisit()
+        {
+        wasvisited = false;
+        }
+
+    public boolean wasVisited()
+        {
+        return wasvisited;
+        }
+
     public boolean equals(AbsEdge edge)
         {
         return equals(edge.getu(), edge.getv());
