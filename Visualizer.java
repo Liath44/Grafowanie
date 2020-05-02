@@ -7,9 +7,7 @@ import java.util.Scanner;
 import java.io.File;
 import java.awt.Graphics;
 
-//TODO: change class name - Canvas
-
-public class Canvas extends JPanel
+public class Visualizer extends JPanel
     {
     private AbsGraph v;
     //private TreeDFS tree;
@@ -68,8 +66,7 @@ public class Canvas extends JPanel
     private void initializeEdge(int ver1, int ver2, int novertexes, int i)
     throws WrongEdgesInput, DuplicatedEdges
         {
-        //TODO: Implement (v, v) edges
-        if(ver1 >= novertexes || ver2 >= novertexes || ver1 < 0 || ver2 < 0 || ver1 == ver2)
+        if(ver1 >= novertexes || ver2 >= novertexes || ver1 < 0 || ver2 < 0)
             throw new WrongEdgesInput(i);
         if(v.edgeExists(v.getVertex(ver1), v.getVertex(ver2)))
             throw new DuplicatedEdges(i);
@@ -104,10 +101,8 @@ public class Canvas extends JPanel
             }
         if(scanner.hasNext())
             throw new RedundantCharactersInInput();
-        scanner.close();
         }
 
-    //TODO: close in finally (main)
     //TODO: check try with resources
     public void exportGraph(String path) throws IOException
         {
@@ -120,10 +115,22 @@ public class Canvas extends JPanel
             Integer ver2 = v.getEdge(i).getv().getIndex();
             filewriter.write(ver1.toString() + " " + ver2.toString() + "\n");
             }
-        filewriter.close();
         }
 
-    public Canvas(boolean isdir)
+    public void Clean()
+        {
+        try
+            {
+            filewriter.close();
+            }
+        catch(IOException e)
+            {
+            System.out.println("IOException - closing filewriter");
+            }
+        scanner.close();
+        }
+
+    public Visualizer(boolean isdir)
         {
         if(isdir)
             v = new DirGraph();

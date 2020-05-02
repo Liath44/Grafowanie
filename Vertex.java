@@ -47,7 +47,7 @@ public class Vertex
             }
         }
 
-    public void paintComponent(Graphics g, Canvas canvas)
+    public void paintComponent(Graphics g, Visualizer visualizer)
         {
         Graphics2D g2d = (Graphics2D) g;
         g2d.fillOval(x-dotsize/2, y-dotsize/2, dotsize, dotsize);

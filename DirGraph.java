@@ -69,9 +69,12 @@ public class DirGraph extends AbsGraph
             {
             //create two edges in place of one
             DirEdge edge1 = new DirEdge(edges.get(i).getu(), edges.get(i).getv());
-            DirEdge edge2 = new DirEdge(edges.get(i).getv(), edges.get(i).getu());
             newedges.add(edge1);
-            newedges.add(edge2);
+            if(!edges.get(i).getv().equals(edges.get(i).getu()))
+                {
+                DirEdge edge2 = new DirEdge(edges.get(i).getv(), edges.get(i).getu());
+                newedges.add(edge2);
+                }
             }
         this.edges = newedges;
         //neighbours don't change

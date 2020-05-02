@@ -30,5 +30,5 @@ public abstract class AbsEdge
 
 	public abstract boolean equals(Vertex ver1, Vertex ver2);
 
-    public abstract void paintComponent(Graphics graphics, Canvas canv, AbsGraph v);
+    public abstract void paintComponent(Graphics graphics, Visualizer vis, AbsGraph v);
     }

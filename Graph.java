@@ -6,7 +6,11 @@ public class Graph extends AbsGraph
         {
         //update neighbours
         u.addNeighbour(v);
-        v.addNeighbour(u);
+        //if u == v we don't want to add neighbour for a second time
+        if(!u.equals(v))
+            {
+            v.addNeighbour(u);
+            }
         //create and add new edge
         Edge edge = new Edge(u, v);
         edges.add(edge);
@@ -25,7 +29,7 @@ public class Graph extends AbsGraph
             AbsEdge edge = edges.get(i);
             if(!edge.getu().hasThisNeighbour(edge.getv()))
                 edge.getu().addNeighbour(edge.getv());
-            if(!edge.getv().hasThisNeighbour(edge.getu()))
+            if(!edge.getv().hasThisNeighbour(edge.getu()) && !edge.getv().equals(edge.getu()))
                 edge.getv().addNeighbour(edge.getu());
             }
         }
@@ -41,7 +45,10 @@ public class Graph extends AbsGraph
     public void removeEdge(int i)
         {
         edges.get(i).getu().removeNeighbour(edges.get(i).getv());
-        edges.get(i).getv().removeNeighbour(edges.get(i).getu());
+        if(!edges.get(i).getv().equals(edges.get(i).getu()))
+            {
+            edges.get(i).getv().removeNeighbour(edges.get(i).getu());
+            }
         edges.remove(i);
         }
 

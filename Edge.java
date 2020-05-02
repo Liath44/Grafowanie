@@ -12,7 +12,7 @@ public class Edge extends AbsEdge
         return (u.equals(ver1) && v.equals(ver2) || v.equals(ver1) && u.equals(ver2));
         }
 
-    public void paintComponent(Graphics graphics, Canvas canv, AbsGraph v)
+    public void paintComponent(Graphics graphics, Visualizer vis, AbsGraph v)
         {
         System.out.println("Straight edge");
         }
