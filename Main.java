@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main
     {
@@ -15,13 +16,8 @@ public class Main
             {
             visualizer.createGraphFromFile(args[0]);
             AbsGraph v = visualizer.getGraph();
-            v.addVertex();
-            v.addVertex();
-            v.addEdge(0, 5);
-            v.removeVertex(6);
-            v.removeEdge(2, 1);
-            visualizer.turnToGraph();
-            v.printInfo();
+            ArrayList<Vertex> path = v.findShortestPath(v.getVertex(6), v.getVertex(1));
+            v.printShortestPath(v.getVertex(6), v.getVertex(1), path);
             visualizer.exportGraph("output");
             }
         catch(FileNotFoundException e)

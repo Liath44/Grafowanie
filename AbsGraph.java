@@ -101,6 +101,23 @@ public abstract class AbsGraph
             System.out.print("\n");
             }
         }
+        
+    public void printShortestPath(Vertex beg, Vertex end, ArrayList<Vertex> path)
+        {
+        if(path == null)
+            {
+            System.out.println("No path from vertex " + beg.getIndex() + " to " + end.getIndex());
+            }
+        else 
+            {
+            System.out.print("Path from vertex " + beg.getIndex() + " to " + end.getIndex() + ":  ");
+            for(int i = path.size() - 1; i >= 0; --i)
+                {
+                System.out.print(path.get(i).getIndex() + "  ");
+                }
+            System.out.print("\n");
+            }
+        }
 
     public void removeEdge(int ver1, int ver2)
         {
@@ -155,6 +172,50 @@ public abstract class AbsGraph
         return findShortestPath(vertexes.get(beg), vertexes.get(end));
         }
 
+    //TODO: turn to private after SPRINT2
+    protected void markComponent(Vertex v)
+        {
+        if(!v.wasVisited())
+            {
+            v.visit();
+            for(int i = 0; i < edges.size(); i++)
+                {
+                if(edges.get(i).getu().equals(v))
+                    {
+                    markComponent(edges.get(i).getv());
+                    }
+                else if(edges.get(i).getv().equals(v))
+                    {
+                    markComponent(edges.get(i).getu());
+                    }
+                }
+            }
+        }
+        
+    //TODO: turn to private after SPRINT2
+    protected void initiatePath(Vertex[] path, Vertex beg)
+        {
+        path[beg.getIndex()] = new Vertex(-1, -1, -1);
+        for(int i = 0; i < path.length; i++)
+            {
+            if(i != beg.getIndex())
+                path[i] = null;
+            }
+        }
+        
+    //TODO: turn to private after SPRINT2
+    protected ArrayList<Vertex> turnPathToList(Vertex[] path, Vertex i, Vertex beg)
+        {
+        ArrayList<Vertex> outcome = new ArrayList<>();
+        while(!i.equals(beg))
+            {
+            outcome.add(i);
+            i = path[i.getIndex()];
+            }
+        outcome.add(i);
+        return outcome;
+        }
+
     public abstract void addEdge(Vertex u, Vertex v);
     public abstract String getGraphType();
     public abstract void removeEdge(int i);
@@ -177,7 +238,6 @@ public abstract class AbsGraph
     public abstract ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end);
     //https://pl.wikipedia.org/wiki/Graf_pe%C5%82ny
     public abstract boolean isComplete();
-
 
     public AbsGraph()
         {

@@ -51,12 +51,23 @@ public class DirGraph extends AbsGraph
         return 0;
         }
 
-    public ArrayList<Vertex> findComponents()
+    //TODO: Move this function to AbsGraph after SPRINT 2
+    public ArrayList<Vertex> findComponents()//Ja chcę to
         {
-        return null;
+        ArrayList<Vertex> outcome = new ArrayList<>();
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            if(!vertexes.get(i).wasVisited())
+                {
+                outcome.add(vertexes.get(i));
+                markComponent(vertexes.get(i));
+                }
+            }
+        unvisitVertexes();
+        return outcome;
         }
-
-    public boolean isTree()
+        
+    public boolean isTree()//L
         {
         return false;
         }
@@ -71,13 +82,39 @@ public class DirGraph extends AbsGraph
         return null;
         }
 
-    public ArrayList<AbsEdge> getEulerPath()
+    public ArrayList<AbsEdge> getEulerPath()//L
         {
         return null;
         }
 
-    public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)
+    //TODO: Move this function to AbsGraph after SPRINT 2
+    public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)//I to
         {
+        ArrayList<Vertex> queue = new ArrayList<>();
+        Vertex[] path = new Vertex[vertexes.size()];
+        initiatePath(path, beg);
+        queue.add(beg);
+        while(!queue.isEmpty())
+            {
+            Vertex cur = queue.get(0);
+            queue.remove(0);
+            if(cur.equals(end))
+                {
+                unvisitVertexes();
+                return turnPathToList(path, end, beg);
+                }
+            for(int i = 0; i < cur.getNeighboursNumber(); i++)
+                {
+                Vertex neighbour = cur.getNeighbour(i);
+                if(!neighbour.wasVisited())
+                    {
+                    path[neighbour.getIndex()] = cur;
+                    queue.add(neighbour);
+                    neighbour.visit();
+                    }
+                }
+            }
+        unvisitVertexes();
         return null;
         }
 
