@@ -73,10 +73,53 @@ public class Graph extends AbsGraph
         return outcome;
         }
 
-    public boolean isTree()//L
-        {
-        return false;
-        }
+	//needed for isTree()
+ 	//check if graph reachable from vertex 0 
+        //check if graph is cyclic  
+        //marks all vertices reachablefrom 0.
+ 	
+    Boolean isCyclic(int v, int parent) 
+    { 
+        ; 
+        vertexes.get(v).visit();
+        Integer i; 
+        Vertex t = vertexes.get(v);
+         
+        for(int j=0; j<t.getNeighboursNumber(); j++)
+        { 
+            Vertex neighbour=t.getNeighbour(j);
+            i = neighbour.getIndex();  
+         
+	    if (!vertexes.get(i).wasVisited()) 
+            { 
+                if (isCyclic(i, v)) 
+                    return true; 
+            } 
+             
+            else if (i != parent) 
+               return true; 
+        } 
+        return false; 
+    } 
+  
+    
+    public boolean isTree() 
+    { 
+        
+        unvisitVertexes();
+        for (int i = 0; i < vertexes.size(); i++) 
+            vertexes.get(i).unvisit(); 
+  
+        if (isCyclic(0, -1)) 
+            return false; 
+         
+        for (int u = 0; u < vertexes.size(); u++) 
+            if (!vertexes.get(u).wasVisited()) 
+                return false; 
+  
+        return true; 
+    } 
+    
 
     public AbsGraph findComplementGraph()
         {
@@ -92,6 +135,68 @@ public class Graph extends AbsGraph
         {
         return null;
         }
+
+	//needed for isEulerian()
+	//function used in Depth First Search for a graph 
+    void DFSUtil(int v) 
+    { 
+        vertexes.get(v).visit();
+        
+        Vertex t = vertexes.get(v);
+        
+        for(int i=0; i<t.getNeighboursNumber(); i++)
+        { 
+          Vertex neighbour=t.getNeighbour(i);
+            if (!neighbour.wasVisited()) 
+                DFSUtil(i); 
+        } 
+    } 
+  
+    // check if all non-zero degree vertices are connected.
+   // needded for isEulerian()
+    boolean isConnected() 
+    { 
+        unvisitVertexes();
+      
+        int i; 
+        for (i = 0; i < vertexes.size(); i++) 
+          vertexes.get(i).unvisit();
+                    
+        for (i = 0; i < vertexes.size(); i++) 
+             if(  vertexes.get(i).getNeighboursNumber()!=0)
+                break; 
+        
+        if (i == vertexes.size()) 
+            return true; 
+  
+        
+        DFSUtil(i); 
+  
+        for (i = 0; i <vertexes.size() ; i++) 
+             if (vertexes.get(i).wasVisited() == false && vertexes.get(i).getNeighboursNumber() > 0) 
+               return false; 
+  
+        return true; 
+    } 
+  
+   // check if given graph is Eulerian
+    boolean isEulerian() 
+    {  
+        if (isConnected() == false) 
+            return false; 
+  
+        // Count vertices with odd degree 
+        int odd = 0; 
+        for (int i = 0; i < vertexes.size(); i++) 
+            if (vertexes.get(i).getNeighboursNumber()%2!=0) 
+                odd++; 
+  
+        if (odd > 2) 
+            return false; 
+  
+        return true; 
+    } 
+  
 
     //TODO: Move this function to AbsGraph after SPRINT 2
     public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)//I to

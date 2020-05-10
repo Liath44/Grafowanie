@@ -234,6 +234,7 @@ public abstract class AbsGraph
     //https://pl.wikipedia.org/wiki/Graf_eulerowski
     //https://pl.wikipedia.org/wiki/Cykl_Eulera
     public abstract ArrayList<AbsEdge> getEulerPath();
+    public abstract boolean isEulerian();
     //https://pl.wikipedia.org/wiki/Problem_najkr%C3%B3tszej_%C5%9Bcie%C5%BCki
     public abstract ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end);
     //https://pl.wikipedia.org/wiki/Graf_pe%C5%82ny
