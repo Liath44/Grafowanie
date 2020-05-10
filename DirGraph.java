@@ -67,10 +67,118 @@ public class DirGraph extends AbsGraph
         return outcome;
         }
         
-    public boolean isTree()//L
-        {
+	//needed for isCyclic()
+      public boolean isCyclicUtil(int i, boolean[] stack)  
+    {    
+        if (Stack[i]) 
+            return true; 
+  
+        if (vertexes.get(i).wasVisited()) 
+            return false; 
+              
+       vertexes.get(i).visit(); 
+  
+        Stack[i] = true; 
+        Vertex t = vertexes.get(i);
+        
+        for(int j=0; j<t.getNeighboursNumber(); j++){
+            Vertex neighbour=t.getNeighbour(i);
+            if (isCyclicUtil(neighbour.getIndex(), stack)) 
+                return true; }
+                  
+        stack[i] = false; 
+  
+        return false; 
+    } 
+  
+    //check if the graph contains a cycle 
+    //needed for isTree()  
+    public boolean isCyclic()  
+    { 
+        unvisitVertexes();
+        boolean[] stack = new boolean[vertexes.size()]; 
+      
+        for (int i = 0; i < vertexes.size(); i++) 
+            if (isCyclic(i, stack)) 
+                return true; 
+  
+        return false; 
+    }  
+    //needed for isConnected()
+     void dfs1(int x,ArrayList<Vertex> vertexes1) 
+    { 
+        
+        vertexes1.get(x).visit();
+        Vertex t = vertexes1.get(x);
+         
+        for(int i=0; i<t.getNeighboursNumber(); i++) {
+            Vertex neighbour=t.getNeighbour(i);
+            for(int j=0; j<edges.size(); j++){
+            AbsEdge edge = edges.get(j);
+            
+            if (!neighbour.wasVisited()&&edge.getu().hasThisNeighbour(edge.getv())) 
+                dfs1(i, vertexes1); 
+        } }
+    } 
+  
+     //needed for isConnected()
+     void dfs2(int x,ArrayList<Vertex> vertexes2)  
+    { 
+        vertexes2.get(x).visit();
+     
+        Vertex t = vertexes2.get(x);
+        
+         for(int i=0; i<t.getNeighboursNumber(); i++) {
+            Vertex neighbour=t.getNeighbour(i);
+            for(int j=0; j<edges.size(); j++){
+            AbsEdge edge = edges.get(j);
+            
+            if (!neighbour.wasVisited()&&edge.getv().hasThisNeighbour(edge.getu())) 
+                dfs1(i, vertexes2); 
+        } }
+    } 
+
+    //needed for isTree()
+    public boolean isConnected() 
+    { 
+       ArrayList<Vertex> vertexes1 = new ArrayList<>();
+       vertexes1=vertexes;
+       ArrayList<Vertex> vertexes2 = new ArrayList<>();
+       vertexes2=vertexes;
+        
+        for (int i = 0; i <= vertexes.size(); i++) 
+        vertexes1.get(i).unvisit();
+        dfs1(0,vertexes1); 
+  
+         
+        for (int i = 0; i <= vertexes.size(); i++) 
+        vertexes2.get(i).unvisit();
+        dfs2(0,vertexes2); 
+  
+        for (int i = 0; i <= vertexes.size(); i++) 
+        {          
+            
+            if (!vertexes1.get(i).wasVisited()&& !vertexes2.get(i).wasVisited()) 
+                return false; 
+        } 
+  
+        
+        return true; 
+    } 
+         
+   public boolean isTree(){
+ 
+    if(edges.size()!=vertexes.size()-1)
         return false;
-        }
+    if(isCyclic())
+        return false;
+    if(isConnected())
+        return true;
+    else return false;
+               
+            }
+           
+      
 
     public AbsGraph findComplementGraph()
         {
@@ -86,6 +194,11 @@ public class DirGraph extends AbsGraph
         {
         return null;
         }
+  boolean isEulerian() 
+	{
+	return false;
+	}
+
 
     //TODO: Move this function to AbsGraph after SPRINT 2
     public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)//I to
