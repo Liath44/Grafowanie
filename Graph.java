@@ -54,7 +54,12 @@ public class Graph extends AbsGraph
 
     public int graphDegree()
         {
-        return 0;
+        int degree=0;
+        for(int i=0;i<vertexes.size();i++) {
+            if (degree < vertexes.get(i).getNeighboursNumber())
+                degree = vertexes.get(i).getNeighboursNumber();
+        }
+        return degree;
         }
 
     //TODO: Move this function to AbsGraph after SPRINT 2
