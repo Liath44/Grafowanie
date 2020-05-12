@@ -70,7 +70,7 @@ public class DirGraph extends AbsGraph
 	//needed for isCyclic()
       public boolean isCyclicUtil(int i, boolean[] stack)  
     {    
-        if (Stack[i]) 
+        if (stack[i]) //prev ver - if (Stack[i]) 
             return true; 
   
         if (vertexes.get(i).wasVisited()) 
@@ -78,7 +78,7 @@ public class DirGraph extends AbsGraph
               
        vertexes.get(i).visit(); 
   
-        Stack[i] = true; 
+        stack[i] = true; //prev ver - Stack[i] = true; 
         Vertex t = vertexes.get(i);
         
         for(int j=0; j<t.getNeighboursNumber(); j++){
@@ -99,7 +99,7 @@ public class DirGraph extends AbsGraph
         boolean[] stack = new boolean[vertexes.size()]; 
       
         for (int i = 0; i < vertexes.size(); i++) 
-            if (isCyclic(i, stack)) 
+            if (isCyclicUtil(i, stack)) //prev ver - if (isCyclic(i, stack)) 
                 return true; 
   
         return false; 
@@ -194,7 +194,7 @@ public class DirGraph extends AbsGraph
         {
         return null;
         }
-  boolean isEulerian() 
+  public boolean isEulerian() //prev ver - boolean isEulerian()
 	{
 	return false;
 	}

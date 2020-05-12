@@ -185,7 +185,7 @@ public class Graph extends AbsGraph
     } 
   
    // check if given graph is Eulerian
-    boolean isEulerian() 
+    public boolean isEulerian() //prev ver - boolean isEulerian()
     {  
         if (isConnected() == false) 
             return false; 
