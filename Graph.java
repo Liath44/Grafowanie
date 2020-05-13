@@ -85,12 +85,11 @@ public class Graph extends AbsGraph
  	
     Boolean isCyclic(int v, int parent) 
     { 
-        ; 
         vertexes.get(v).visit();
         Integer i; 
         Vertex t = vertexes.get(v);
          
-        for(int j=0; j<t.getNeighboursNumber(); j++)
+        for(int j=0; j<vertexes.get(v).getNeighboursNumber(); j++)
         { 
             Vertex neighbour=t.getNeighbour(j);
             i = neighbour.getIndex();  
@@ -111,7 +110,6 @@ public class Graph extends AbsGraph
     public boolean isTree() 
     { 
         
-        unvisitVertexes();
         for (int i = 0; i < vertexes.size(); i++) 
             vertexes.get(i).unvisit(); 
   
