@@ -16,8 +16,7 @@ public class Main
             {
             visualizer.createGraphFromFile(args[0]);
             /*AbsGraph v = visualizer.getGraph();
-            ArrayList<Vertex> path = v.findShortestPath(v.getVertex(6), v.getVertex(1));
-            v.printShortestPath(v.getVertex(6), v.getVertex(1), path);*/
+            System.out.println(v.graphDegree());*/
             visualizer.exportGraph("output");
             }
         catch(FileNotFoundException e)

@@ -48,7 +48,21 @@ public class DirGraph extends AbsGraph
 
     public int graphDegree()
         {
-        return 0;
+        int maxDeg = 0;
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            int curDeg = 0;
+            for(int j = 0; j < edges.size(); j++)
+                {
+                if(edges.get(j).getu().getIndex() == i)
+                    curDeg++;
+                else if(edges.get(j).getv().getIndex() == i)
+                    curDeg++;
+                }
+            if(curDeg > maxDeg)
+                maxDeg = curDeg;
+            }
+        return maxDeg;
         }
 
     //TODO: Move this function to AbsGraph after SPRINT 2
