@@ -141,26 +141,30 @@ public class Graph extends AbsGraph
 
 	//needed for isEulerian()
 	//function used in Depth First Search for a graph 
-    void DFSUtil(int v) 
+     void DFSUtil(int v) 
     { 
         vertexes.get(v).visit();
         
         Vertex t = vertexes.get(v);
+	Integer j;
         
-        for(int i=0; i<t.getNeighboursNumber(); i++)
+        for(int i=0; i<vertexes.get(v).getNeighboursNumber(); i++)
         { 
           Vertex neighbour=t.getNeighbour(i);
-            if (!neighbour.wasVisited()) 
-                DFSUtil(i); 
+	  j = neighbour.getIndex();
+		
+            if (!vertexes.get(j).wasVisited()) 
+                DFSUtil(j); 
         } 
     } 
   
+
+
     // check if all non-zero degree vertices are connected.
    // needded for isEulerian()
-    boolean isConnected() 
+    public boolean isConnected() 
     { 
-        unvisitVertexes();
-      
+            
         int i; 
         for (i = 0; i < vertexes.size(); i++) 
           vertexes.get(i).unvisit();
@@ -185,7 +189,7 @@ public class Graph extends AbsGraph
    // check if given graph is Eulerian
     public boolean isEulerian() //prev ver - boolean isEulerian()
     {  
-        if (isConnected() == false) 
+        if (!isConnected()) 
             return false; 
   
         // Count vertices with odd degree 
