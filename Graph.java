@@ -58,7 +58,7 @@ public class Graph extends AbsGraph
         for(int i=0;i<vertexes.size();i++) {
             if (degree < vertexes.get(i).getNeighboursNumber())
                 degree = vertexes.get(i).getNeighboursNumber();
-        }
+            }
         return degree;
         }
 

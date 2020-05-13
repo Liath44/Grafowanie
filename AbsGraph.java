@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+import java.util.*;
 
 public abstract class AbsGraph
     {
@@ -9,7 +9,7 @@ public abstract class AbsGraph
     public Integer countVertexes()
         {
         return vertexes.size();
-        }
+       }
 
     public Integer countEdges()
         {
@@ -27,7 +27,7 @@ public abstract class AbsGraph
         }
 
     public void addEdge(int ver1, int ver2)
-        {
+        {   
         addEdge(vertexes.get(ver1), vertexes.get(ver2));
         }
     /*
@@ -73,7 +73,7 @@ public abstract class AbsGraph
         }
 
     public ArrayList<AbsEdge> getEdgeList()
-        {
+        {   
         return edges;
         }
 
@@ -101,14 +101,14 @@ public abstract class AbsGraph
             System.out.print("\n");
             }
         }
-        
+
     public void printShortestPath(Vertex beg, Vertex end, ArrayList<Vertex> path)
         {
         if(path == null)
             {
             System.out.println("No path from vertex " + beg.getIndex() + " to " + end.getIndex());
             }
-        else 
+        else
             {
             System.out.print("Path from vertex " + beg.getIndex() + " to " + end.getIndex() + ":  ");
             for(int i = path.size() - 1; i >= 0; --i)
@@ -167,6 +167,62 @@ public abstract class AbsGraph
             }
         }
 
+    public boolean isComplete()
+        {
+        for(int i = 0; i < vertexes.size(); i++) {
+            if(getVertex(i).getNeighboursNumber()!=vertexes.size()-1) {
+                return false;
+                }
+            }
+        return true;
+        }
+
+    // Pair class
+    class Pair<U, V>
+        {
+        public final U first;   	// first field of a Pair
+        public final V second;  	// second field of a Pair
+
+        // Constructs a new Pair with specified values
+        private Pair(U first, V second)
+            {
+            this.first = first;
+            this.second = second;
+            }
+        }
+
+    public AbsGraph findComplementGraph()
+        {
+        DirGraph result = new DirGraph();
+        Set<Pair<Integer,Integer>> full = new TreeSet<>();
+        for(int i = 0; i<vertexes.size(); i++) {
+            for(int j = 0; j<vertexes.size(); j++) {
+                if(j != i) {
+                    full.add(new Pair<>(getVertex(i).getIndex(),getVertex(j).getIndex()));
+                    }
+                }
+            }
+
+        for(int i=0; i<vertexes.size(); i++) {
+            for(int j=0; j<getVertex(i).getNeighboursNumber(); j++) {
+                full.remove(new Pair<>(getVertex(i).getIndex(),getVertex(i).getNeighbour(j).getIndex()));
+                }
+            }
+
+        Iterator<Pair<Integer,Integer>> it = full.iterator();
+
+        for(int i=0; i<vertexes.size(); i++) {
+            result.addVertex();
+            }
+
+        while(it.hasNext()) {
+            Pair<Integer,Integer> tmp=it.next();
+            result.addEdge(result.getVertex(tmp.first),result.getVertex(tmp.second));
+            }
+
+        return result;
+        }
+
     public ArrayList<Vertex> findShortestPath(int beg, int end)
         {
         return findShortestPath(vertexes.get(beg), vertexes.get(end));
@@ -191,7 +247,7 @@ public abstract class AbsGraph
                 }
             }
         }
-        
+
     //TODO: turn to private after SPRINT2
     protected void initiatePath(Vertex[] path, Vertex beg)
         {
@@ -202,7 +258,7 @@ public abstract class AbsGraph
                 path[i] = null;
             }
         }
-        
+
     //TODO: turn to private after SPRINT2
     protected ArrayList<Vertex> turnPathToList(Vertex[] path, Vertex i, Vertex beg)
         {
@@ -227,7 +283,6 @@ public abstract class AbsGraph
     //https://pl.wikipedia.org/wiki/Drzewo_(matematyka)
     public abstract boolean isTree();
     //https://en.wikipedia.org/wiki/Complement_graph
-    public abstract AbsGraph findComplementGraph();
     //https://pl.wikipedia.org/wiki/Graf_hamiltonowski
     //https://pl.wikipedia.org/wiki/Algorytm_Fleury%E2%80%99ego
     public abstract ArrayList<Vertex> getHamiltonianPath();
@@ -238,7 +293,6 @@ public abstract class AbsGraph
     //https://pl.wikipedia.org/wiki/Problem_najkr%C3%B3tszej_%C5%9Bcie%C5%BCki
     public abstract ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end);
     //https://pl.wikipedia.org/wiki/Graf_pe%C5%82ny
-    public abstract boolean isComplete();
 
     public AbsGraph()
         {
