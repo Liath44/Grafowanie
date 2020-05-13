@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DirGraph extends AbsGraph
     {
@@ -48,21 +49,20 @@ public class DirGraph extends AbsGraph
 
     public int graphDegree()
         {
-        int maxDeg = 0;
-        for(int i = 0; i < vertexes.size(); i++)
+        int maxdeg = 0;
+        int[] degrees = new int[vertexes.size()];
+        Arrays.fill(degrees, 0);
+        for(int i = 0; i < edges.size(); i++)
             {
-            int curDeg = 0;
-            for(int j = 0; j < edges.size(); j++)
-                {
-                if(edges.get(j).getu().getIndex() == i)
-                    curDeg++;
-                else if(edges.get(j).getv().getIndex() == i)
-                    curDeg++;
-                }
-            if(curDeg > maxDeg)
-                maxDeg = curDeg;
+            degrees[edges.get(i).getu().getIndex()]++;
+            degrees[edges.get(i).getv().getIndex()]++;
             }
-        return maxDeg;
+        for(int j = 0; j < degrees.length; j++)
+            {
+            if(degrees[j] > maxdeg)
+                maxdeg = degrees[j];
+            }
+        return maxdeg;
         }
 
     //TODO: Move this function to AbsGraph after SPRINT 2
