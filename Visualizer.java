@@ -117,17 +117,19 @@ public class Visualizer extends JPanel
             }
         }
 
-    public void Clean()
+    public void clean()
         {
         try
             {
-            filewriter.close();
+            if(filewriter != null)
+                filewriter.close();
             }
         catch(IOException e)
             {
             System.out.println("IOException - closing filewriter");
             }
-        scanner.close();
+        if(scanner != null)
+            scanner.close();
         }
 
     public Visualizer(boolean isdir)

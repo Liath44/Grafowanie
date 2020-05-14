@@ -102,6 +102,18 @@ public abstract class AbsGraph
             }
         }
 
+    public void printShortestPath(int beg, int end, ArrayList<Vertex> path)
+        {
+        if(beg < 0 || beg >= vertexes.size() || end < 0 || end >= vertexes.size())
+            {
+            System.out.println("One of those indexes does not exist in graph: " + beg + " || " + end);
+            }
+        else
+            {
+            printShortestPath(vertexes.get(beg), vertexes.get(end), path);
+            }
+        }
+        
     public void printShortestPath(Vertex beg, Vertex end, ArrayList<Vertex> path)
         {
         if(path == null)
@@ -178,7 +190,7 @@ public abstract class AbsGraph
         }
 
     // Pair class
-    class Pair<U, V>
+    static class Pair<U, V>
         {
         public final U first;   	// first field of a Pair
         public final V second;  	// second field of a Pair
@@ -225,10 +237,13 @@ public abstract class AbsGraph
 
     public ArrayList<Vertex> findShortestPath(int beg, int end)
         {
+        if(beg < 0 || beg >= vertexes.size())
+            return null;
+        if(end < 0 || end >= vertexes.size())
+            return null;
         return findShortestPath(vertexes.get(beg), vertexes.get(end));
         }
-
-    //TODO: turn to private after SPRINT2
+        
     protected void markComponent(Vertex v)
         {
         if(!v.wasVisited())
@@ -247,9 +262,8 @@ public abstract class AbsGraph
                 }
             }
         }
-
-    //TODO: turn to private after SPRINT2
-    protected void initiatePath(Vertex[] path, Vertex beg)
+        
+    private void initiatePath(Vertex[] path, Vertex beg)
         {
         path[beg.getIndex()] = new Vertex(-1, -1, -1);
         for(int i = 0; i < path.length; i++)
@@ -258,9 +272,8 @@ public abstract class AbsGraph
                 path[i] = null;
             }
         }
-
-    //TODO: turn to private after SPRINT2
-    protected ArrayList<Vertex> turnPathToList(Vertex[] path, Vertex i, Vertex beg)
+        
+    private ArrayList<Vertex> turnPathToList(Vertex[] path, Vertex i, Vertex beg)
         {
         ArrayList<Vertex> outcome = new ArrayList<>();
         while(!i.equals(beg))
@@ -271,28 +284,62 @@ public abstract class AbsGraph
         outcome.add(i);
         return outcome;
         }
+        
+    public ArrayList<Vertex> findComponents()
+        {
+        ArrayList<Vertex> outcome = new ArrayList<>();
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            if(!vertexes.get(i).wasVisited())
+                {
+                outcome.add(vertexes.get(i));
+                markComponent(vertexes.get(i));
+                }
+            }
+        unvisitVertexes();
+        return outcome;
+        }
+        
+    public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)
+        {
+        ArrayList<Vertex> queue = new ArrayList<>();
+        Vertex[] path = new Vertex[vertexes.size()];
+        initiatePath(path, beg);
+        queue.add(beg);
+        while(!queue.isEmpty())
+            {
+            Vertex cur = queue.get(0);
+            queue.remove(0);
+            if(cur.equals(end))
+                {
+                unvisitVertexes();
+                return turnPathToList(path, end, beg);
+                }
+            for(int i = 0; i < cur.getNeighboursNumber(); i++)
+                {
+                Vertex neighbour = cur.getNeighbour(i);
+                if(!neighbour.wasVisited())
+                    {
+                    path[neighbour.getIndex()] = cur;
+                    queue.add(neighbour);
+                    neighbour.visit();
+                    }
+                }
+            }
+        unvisitVertexes();
+        return null;
+        }
 
     public abstract void addEdge(Vertex u, Vertex v);
     public abstract String getGraphType();
     public abstract void removeEdge(int i);
-
-    //https://en.wikipedia.org/wiki/Degree_(graph_theory)
+    
     public abstract int graphDegree();
-    //https://en.wikipedia.org/wiki/Component_(graph_theory)
-    public abstract ArrayList<Vertex> findComponents();
-    //https://pl.wikipedia.org/wiki/Drzewo_(matematyka)
     public abstract boolean isTree();
-    //https://en.wikipedia.org/wiki/Complement_graph
-    //https://pl.wikipedia.org/wiki/Graf_hamiltonowski
-    //https://pl.wikipedia.org/wiki/Algorytm_Fleury%E2%80%99ego
-    public abstract ArrayList<Vertex> getHamiltonianPath();
-    //https://pl.wikipedia.org/wiki/Graf_eulerowski
-    //https://pl.wikipedia.org/wiki/Cykl_Eulera
-    public abstract ArrayList<AbsEdge> getEulerPath();
+    //public abstract ArrayList<AbsEdge> getEulerPath();
     public abstract boolean isEulerian();
-    //https://pl.wikipedia.org/wiki/Problem_najkr%C3%B3tszej_%C5%9Bcie%C5%BCki
-    public abstract ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end);
-    //https://pl.wikipedia.org/wiki/Graf_pe%C5%82ny
+    public abstract boolean isCyclic();
+    public abstract boolean isConnected();
 
     public AbsGraph()
         {

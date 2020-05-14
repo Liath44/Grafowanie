@@ -15,8 +15,17 @@ public class Main
         try
             {
             visualizer.createGraphFromFile(args[0]);
-            /*AbsGraph v = visualizer.getGraph();
-            System.out.println(v.graphDegree());*/
+            AbsGraph v = visualizer.getGraph();
+            System.out.print(v.getGraphType());
+            System.out.println("Graph degree: " + v.graphDegree());
+            System.out.println("Is complete: " + v.isComplete());
+            ArrayList<Vertex> shortestpath = v.findShortestPath(0, 77);
+            v.printShortestPath(0, 77, shortestpath);
+            System.out.println("Is connected: " + v.isConnected());
+            System.out.println("Number of components: " + v.findComponents().size());
+            System.out.println("Has cycle: " + v.isCyclic());
+            System.out.println("Is tree: " + v.isTree());
+            System.out.println("Is Eulerian: " + v.isEulerian());
             visualizer.exportGraph("output");
             }
         catch(FileNotFoundException e)
@@ -71,7 +80,7 @@ public class Main
             }
         finally
             {
-            visualizer.Clean();
+            visualizer.clean();
             }
         }
     }

@@ -65,191 +65,72 @@ public class DirGraph extends AbsGraph
         return maxdeg;
         }
 
-    //TODO: Move this function to AbsGraph after SPRINT 2
-    public ArrayList<Vertex> findComponents()//Ja chcę to
+    public boolean isCyclic()
         {
-        ArrayList<Vertex> outcome = new ArrayList<>();
         for(int i = 0; i < vertexes.size(); i++)
             {
-            if(!vertexes.get(i).wasVisited())
+            for(int j = 0; j < vertexes.get(i).getNeighboursNumber(); j++)
                 {
-                outcome.add(vertexes.get(i));
-                markComponent(vertexes.get(i));
+                tryToGoEverywhere(vertexes.get(i).getNeighbour(j));
                 }
+            if(vertexes.get(i).wasVisited())
+                return true;
+            unvisitVertexes();
             }
-        unvisitVertexes();
-        return outcome;
-        }
-        
-	//needed for isCyclic()
-      public boolean isCyclicUtil(int i, boolean[] stack)  
-    {    
-        if (stack[i]) //prev ver - if (Stack[i]) 
-            return true; 
-  
-        if (vertexes.get(i).wasVisited()) 
-            return false; 
-              
-       vertexes.get(i).visit(); 
-  
-        stack[i] = true; //prev ver - Stack[i] = true; 
-        Vertex t = vertexes.get(i);
-        
-        for(int j=0; j<t.getNeighboursNumber(); j++){
-            Vertex neighbour=t.getNeighbour(i);
-            if (isCyclicUtil(neighbour.getIndex(), stack)) 
-                return true; }
-                  
-        stack[i] = false; 
-  
-        return false; 
-    } 
-  
-    //check if the graph contains a cycle 
-    //needed for isTree()  
-    public boolean isCyclic()  
-    { 
-        unvisitVertexes();
-        boolean[] stack = new boolean[vertexes.size()]; 
-      
-        for (int i = 0; i < vertexes.size(); i++) 
-            if (isCyclicUtil(i, stack)) //prev ver - if (isCyclic(i, stack)) 
-                return true; 
-  
-        return false; 
-    }  
-    //needed for isConnected()
-     void dfs1(int x,ArrayList<Vertex> vertexes1) 
-    { 
-        
-        vertexes1.get(x).visit();
-        Vertex t = vertexes1.get(x);
-         
-        for(int i=0; i<t.getNeighboursNumber(); i++) {
-            Vertex neighbour=t.getNeighbour(i);
-            for(int j=0; j<edges.size(); j++){
-            AbsEdge edge = edges.get(j);
-            
-            if (!neighbour.wasVisited()&&edge.getu().hasThisNeighbour(edge.getv())) 
-                dfs1(i, vertexes1); 
-        } }
-    } 
-  
-     //needed for isConnected()
-     void dfs2(int x,ArrayList<Vertex> vertexes2)  
-    { 
-        vertexes2.get(x).visit();
-     
-        Vertex t = vertexes2.get(x);
-        
-         for(int i=0; i<t.getNeighboursNumber(); i++) {
-            Vertex neighbour=t.getNeighbour(i);
-            for(int j=0; j<edges.size(); j++){
-            AbsEdge edge = edges.get(j);
-            
-            if (!neighbour.wasVisited()&&edge.getv().hasThisNeighbour(edge.getu())) 
-                dfs1(i, vertexes2); 
-        } }
-    } 
-
-    //needed for isTree()
-    public boolean isConnected() 
-    { 
-       ArrayList<Vertex> vertexes1 = new ArrayList<>();
-       vertexes1=vertexes;
-       ArrayList<Vertex> vertexes2 = new ArrayList<>();
-       vertexes2=vertexes;
-        
-        for (int i = 0; i <= vertexes.size(); i++) 
-        vertexes1.get(i).unvisit();
-        dfs1(0,vertexes1); 
-  
-         
-        for (int i = 0; i <= vertexes.size(); i++) 
-        vertexes2.get(i).unvisit();
-        dfs2(0,vertexes2); 
-  
-        for (int i = 0; i <= vertexes.size(); i++) 
-        {          
-            
-            if (!vertexes1.get(i).wasVisited()&& !vertexes2.get(i).wasVisited()) 
-                return false; 
-        } 
-  
-        
-        return true; 
-    } 
-         
-   public boolean isTree(){
- 
-    if(edges.size()!=vertexes.size()-1)
         return false;
-    if(isCyclic())
-        return false;
-    if(isConnected())
-        return true;
-    else return false;
-               
-            }
-           
-      
-
-    public AbsGraph findComplementGraph()
-        {
-        return null;
         }
-
-    public ArrayList<Vertex> getHamiltonianPath()
+        
+        
+    private void tryToGoEverywhere(Vertex v)
         {
-        return null;
-        }
-
-    public ArrayList<AbsEdge> getEulerPath()//L
-        {
-        return null;
-        }
-  public boolean isEulerian() //prev ver - boolean isEulerian()
-	{
-	return false;
-	}
-
-
-    //TODO: Move this function to AbsGraph after SPRINT 2
-    public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)//I to
-        {
-        ArrayList<Vertex> queue = new ArrayList<>();
-        Vertex[] path = new Vertex[vertexes.size()];
-        initiatePath(path, beg);
-        queue.add(beg);
-        while(!queue.isEmpty())
+        if(!v.wasVisited())
             {
-            Vertex cur = queue.get(0);
-            queue.remove(0);
-            if(cur.equals(end))
+            v.visit();
+            for(int i = 0; i < v.getNeighboursNumber(); i++)
+                tryToGoEverywhere(v.getNeighbour(i));
+            }
+        }
+        
+    public boolean isConnected()
+        {
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            tryToGoEverywhere(vertexes.get(i));
+            for(int j = 0; j < vertexes.size(); j++)
                 {
-                unvisitVertexes();
-                return turnPathToList(path, end, beg);
-                }
-            for(int i = 0; i < cur.getNeighboursNumber(); i++)
-                {
-                Vertex neighbour = cur.getNeighbour(i);
-                if(!neighbour.wasVisited())
+                if(!vertexes.get(j).wasVisited())
                     {
-                    path[neighbour.getIndex()] = cur;
-                    queue.add(neighbour);
-                    neighbour.visit();
+                    unvisitVertexes();
+                    return false;
                     }
                 }
+            unvisitVertexes();
             }
-        unvisitVertexes();
-        return null;
+        return true;
         }
-
-    public boolean isComplete()
-        {
+         
+    //TODO: ??????
+    public boolean isTree()
+        { 
         return false;
         }
 
+    public boolean isEulerian()
+        {
+        if(!isConnected())
+            return false;
+        int[] edgesin = new int[vertexes.size()];
+        Arrays.fill(edgesin, 0);
+        for(int i = 0; i < edges.size(); i++)
+            edgesin[edges.get(i).getv().getIndex()]++;
+        for(int j = 0; j < vertexes.size(); j++)
+            {
+            if(edgesin[j] != vertexes.get(j).getNeighboursNumber())
+                return false;
+            }
+        return true;
+        }
+        
     public DirGraph()
         {
         super();

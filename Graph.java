@@ -62,28 +62,27 @@ public class Graph extends AbsGraph
         return degree;
         }
 
-    //TODO: Move this function to AbsGraph after SPRINT 2
-    public ArrayList<Vertex> findComponents()//Ja chcę to
+    public boolean isCyclic()
         {
-        ArrayList<Vertex> outcome = new ArrayList<>();
-        for(int i = 0; i < vertexes.size(); i++)
+        ArrayList<Vertex> components = findComponents();
+        for(int i = 0; i < components.size(); i++)
             {
-            if(!vertexes.get(i).wasVisited())
+            if(isCyclic(components.get(i).getIndex(), -1))
                 {
-                outcome.add(vertexes.get(i));
-                markComponent(vertexes.get(i));
+                unvisitVertexes();
+                return true;
                 }
             }
         unvisitVertexes();
-        return outcome;
+        return false;
         }
-
+        
 	//needed for isTree()
  	//check if graph reachable from vertex 0 
-        //check if graph is cyclic  
-        //marks all vertices reachablefrom 0.
- 	
-    Boolean isCyclic(int v, int parent) 
+    //check if graph is cyclic  
+    //marks all vertices reachablefrom 0.
+        
+    private Boolean isCyclic(int v, int parent) 
     { 
         vertexes.get(v).visit();
         Integer i; 
@@ -108,139 +107,57 @@ public class Graph extends AbsGraph
   
     
     public boolean isTree() 
-    { 
-        
-        for (int i = 0; i < vertexes.size(); i++) 
-            vertexes.get(i).unvisit(); 
-  
-        if (isCyclic(0, -1)) 
-            return false; 
-         
-        for (int u = 0; u < vertexes.size(); u++) 
-            if (!vertexes.get(u).wasVisited()) 
-                return false; 
-  
-        return true; 
-    } 
-    
-
-    public AbsGraph findComplementGraph()
         {
-        return null;
-        }
-
-    public ArrayList<Vertex> getHamiltonianPath()
-        {
-        return null;
-        }
-
-    public ArrayList<AbsEdge> getEulerPath()//L
-        {
-        return null;
-        }
-
-	//needed for isEulerian()
-	//function used in Depth First Search for a graph 
-     void DFSUtil(int v) 
-    { 
-        vertexes.get(v).visit();
-        
-        Vertex t = vertexes.get(v);
-	Integer j;
-        
-        for(int i=0; i<vertexes.get(v).getNeighboursNumber(); i++)
-        { 
-          Vertex neighbour=t.getNeighbour(i);
-	  j = neighbour.getIndex();
-		
-            if (!vertexes.get(j).wasVisited()) 
-                DFSUtil(j); 
-        } 
-    } 
-  
-
-
-    // check if all non-zero degree vertices are connected.
-   // needded for isEulerian()
-    public boolean isConnected() 
-    { 
+        if(!isConnected())
+            return false;
             
-        int i; 
-        for (i = 0; i < vertexes.size(); i++) 
-          vertexes.get(i).unvisit();
-                    
-        for (i = 0; i < vertexes.size(); i++) 
-             if(  vertexes.get(i).getNeighboursNumber()!=0)
-                break; 
-        
-        if (i == vertexes.size()) 
-            return true; 
-  
-        
-        DFSUtil(i); 
-  
-        for (i = 0; i <vertexes.size() ; i++) 
-             if (vertexes.get(i).wasVisited() == false && vertexes.get(i).getNeighboursNumber() > 0) 
-               return false; 
-  
-        return true; 
-    } 
-  
-   // check if given graph is Eulerian
-    public boolean isEulerian() //prev ver - boolean isEulerian()
-    {  
-        if (!isConnected()) 
-            return false; 
-  
-        // Count vertices with odd degree 
-        int odd = 0; 
-        for (int i = 0; i < vertexes.size(); i++) 
-            if (vertexes.get(i).getNeighboursNumber()%2!=0) 
-                odd++; 
-  
-        if (odd > 2) 
-            return false; 
-  
-        return true; 
-    } 
-  
-
-    //TODO: Move this function to AbsGraph after SPRINT 2
-    public ArrayList<Vertex> findShortestPath(Vertex beg, Vertex end)//I to
-        {
-        ArrayList<Vertex> queue = new ArrayList<>();
-        Vertex[] path = new Vertex[vertexes.size()];
-        initiatePath(path, beg);
-        queue.add(beg);
-        while(!queue.isEmpty())
+        if (isCyclic(0, -1))
             {
-            Vertex cur = queue.get(0);
-            queue.remove(0);
-            if(cur.equals(end))
+            unvisitVertexes();
+            return false;
+            }
+         
+        for(int u = 0; u < vertexes.size(); u++) 
+            {
+            if (!vertexes.get(u).wasVisited())
                 {
                 unvisitVertexes();
-                return turnPathToList(path, end, beg);
+                return false;
                 }
-            for(int i = 0; i < cur.getNeighboursNumber(); i++)
+            }
+        
+        return true; 
+        }
+
+    public boolean isConnected()
+        {
+        if(vertexes.size() == 0)
+            return true;
+        markComponent(vertexes.get(0));
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            if(!vertexes.get(i).wasVisited())
                 {
-                Vertex neighbour = cur.getNeighbour(i);
-                if(!neighbour.wasVisited())
-                    {
-                    path[neighbour.getIndex()] = cur;
-                    queue.add(neighbour);
-                    neighbour.visit();
-                    }
+                unvisitVertexes();
+                return false;
                 }
             }
         unvisitVertexes();
-        return null;
+        return true;
         }
-
-    public boolean isComplete()
+    
+    public boolean isEulerian()
         {
-        return false;
+        if(!isConnected())
+            return false;
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            if(vertexes.get(i).getNeighboursNumber() % 2 == 1)
+                return false;
+            }
+        return true;
         }
-
+        
     public Graph()
         {
         super();
