@@ -157,6 +157,38 @@ public class Graph extends AbsGraph
             }
         return true;
         }
+
+    private void fillMatrix(int[][] matrix)
+        {
+        for(int i = 0; i < edges.size(); i++)
+            {
+            matrix[edges.get(i).getu().getIndex()][edges.get(i).getv().getIndex()] += 1;
+            matrix[edges.get(i).getv().getIndex()][edges.get(i).getu().getIndex()] += 1;
+            }
+        }
+        
+    private void addComplementEdges(int[][] matrix, AbsGraph outcome)
+        {
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            for(int j = 0; j < i; j++)
+                {
+                if(matrix[j][i] == 0)
+                    outcome.addEdge(outcome.getVertex(i), outcome.getVertex(j));
+                }
+            }
+        }    
+        
+    public AbsGraph findComplementGraph()
+        {
+        int[][] matrix = new int[vertexes.size()][vertexes.size()];
+        resetMatrix(matrix);
+        fillMatrix(matrix);
+        Graph outcome = new Graph();
+        addVertexesToNewGraph(outcome);
+        addComplementEdges(matrix, outcome);
+        return outcome;
+        }
         
     public Graph()
         {

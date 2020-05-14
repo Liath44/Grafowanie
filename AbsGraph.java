@@ -189,52 +189,6 @@ public abstract class AbsGraph
         return true;
         }
 
-    // Pair class
-    static class Pair<U, V>
-        {
-        public final U first;   	// first field of a Pair
-        public final V second;  	// second field of a Pair
-
-        // Constructs a new Pair with specified values
-        private Pair(U first, V second)
-            {
-            this.first = first;
-            this.second = second;
-            }
-        }
-
-    public AbsGraph findComplementGraph()
-        {
-        DirGraph result = new DirGraph();
-        Set<Pair<Integer,Integer>> full = new TreeSet<>();
-        for(int i = 0; i<vertexes.size(); i++) {
-            for(int j = 0; j<vertexes.size(); j++) {
-                if(j != i) {
-                    full.add(new Pair<>(getVertex(i).getIndex(),getVertex(j).getIndex()));
-                    }
-                }
-            }
-
-        for(int i=0; i<vertexes.size(); i++) {
-            for(int j=0; j<getVertex(i).getNeighboursNumber(); j++) {
-                full.remove(new Pair<>(getVertex(i).getIndex(),getVertex(i).getNeighbour(j).getIndex()));
-                }
-            }
-
-        Iterator<Pair<Integer,Integer>> it = full.iterator();
-
-        for(int i=0; i<vertexes.size(); i++) {
-            result.addVertex();
-            }
-
-        while(it.hasNext()) {
-            Pair<Integer,Integer> tmp=it.next();
-            result.addEdge(result.getVertex(tmp.first),result.getVertex(tmp.second));
-            }
-
-        return result;
-        }
-
     public ArrayList<Vertex> findShortestPath(int beg, int end)
         {
         if(beg < 0 || beg >= vertexes.size())
@@ -330,6 +284,23 @@ public abstract class AbsGraph
         return null;
         }
 
+    protected void resetMatrix(int[][] matrix)
+        {
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            for(int j = 0; j < vertexes.size(); j++)
+                matrix[i][j] = 0;
+            }
+        }
+        
+    protected void addVertexesToNewGraph(AbsGraph g)
+        {
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            g.addVertex();
+            }
+        }
+        
     public abstract void addEdge(Vertex u, Vertex v);
     public abstract String getGraphType();
     public abstract void removeEdge(int i);
@@ -340,6 +311,7 @@ public abstract class AbsGraph
     public abstract boolean isEulerian();
     public abstract boolean hasCycle();
     public abstract boolean isConnected();
+    public abstract AbsGraph findComplementGraph();
 
     public AbsGraph()
         {

@@ -11,7 +11,7 @@ public class DirGraph extends AbsGraph
         DirEdge edge = new DirEdge(u, v);
         edges.add(edge);
         }
-
+        
     /*
      * Iterates through all edges to check whether neighbours are set properly
      * If not updates them
@@ -129,6 +129,37 @@ public class DirGraph extends AbsGraph
                 return false;
             }
         return true;
+        }
+
+    private void fillMatrix(int[][] matrix)
+        {
+        for(int i = 0; i < edges.size(); i++)
+            {
+            matrix[edges.get(i).getu().getIndex()][edges.get(i).getv().getIndex()] += 1;
+            }
+        }
+
+    private void addComplementEdges(int[][] matrix, AbsGraph outcome)
+        {
+        for(int i = 0; i < vertexes.size(); i++)
+            {
+            for(int j = 0; j < vertexes.size(); j++)
+                {
+                if(i != j && matrix[j][i] == 0)
+                    outcome.addEdge(outcome.getVertex(j), outcome.getVertex(i));
+                }
+            }
+        }
+
+    public AbsGraph findComplementGraph()
+        {
+        int[][] matrix = new int[vertexes.size()][vertexes.size()];
+        resetMatrix(matrix);
+        fillMatrix(matrix);
+        DirGraph outcome = new DirGraph();
+        addVertexesToNewGraph(outcome);
+        addComplementEdges(matrix, outcome);
+        return outcome;
         }
         
     public DirGraph()

@@ -19,13 +19,17 @@ public class Main
             System.out.print(v.getGraphType());
             System.out.println("Graph degree: " + v.graphDegree());
             System.out.println("Is complete: " + v.isComplete());
-            ArrayList<Vertex> shortestpath = v.findShortestPath(0, 77);
-            v.printShortestPath(0, 77, shortestpath);
+            ArrayList<Vertex> shortestpath = v.findShortestPath(0, 1);
+            v.printShortestPath(0, 1, shortestpath);
             System.out.println("Is connected: " + v.isConnected());
             System.out.println("Number of components: " + v.findComponents().size());
             System.out.println("Has cycle: " + v.hasCycle());
             System.out.println("Is tree: " + v.isTree());
             System.out.println("Is Eulerian: " + v.isEulerian());
+            System.out.print("\n");
+            System.out.println("-- Info on complement graph --");
+            AbsGraph complement = v.findComplementGraph();
+            complement.printInfo();
             visualizer.exportGraph("output");
             }
         catch(FileNotFoundException e)
