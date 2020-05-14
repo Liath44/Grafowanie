@@ -338,7 +338,7 @@ public abstract class AbsGraph
     public abstract boolean isTree();
     //public abstract ArrayList<AbsEdge> getEulerPath();
     public abstract boolean isEulerian();
-    public abstract boolean isCyclic();
+    public abstract boolean hasCycle();
     public abstract boolean isConnected();
 
     public AbsGraph()

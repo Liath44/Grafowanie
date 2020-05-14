@@ -23,7 +23,7 @@ public class Main
             v.printShortestPath(0, 77, shortestpath);
             System.out.println("Is connected: " + v.isConnected());
             System.out.println("Number of components: " + v.findComponents().size());
-            System.out.println("Has cycle: " + v.isCyclic());
+            System.out.println("Has cycle: " + v.hasCycle());
             System.out.println("Is tree: " + v.isTree());
             System.out.println("Is Eulerian: " + v.isEulerian());
             visualizer.exportGraph("output");

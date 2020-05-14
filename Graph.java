@@ -62,12 +62,12 @@ public class Graph extends AbsGraph
         return degree;
         }
 
-    public boolean isCyclic()
+    public boolean hasCycle()
         {
         ArrayList<Vertex> components = findComponents();
         for(int i = 0; i < components.size(); i++)
             {
-            if(isCyclic(components.get(i).getIndex(), -1))
+            if(hasCycle(components.get(i).getIndex(), -1))
                 {
                 unvisitVertexes();
                 return true;
@@ -82,7 +82,7 @@ public class Graph extends AbsGraph
     //check if graph is cyclic  
     //marks all vertices reachablefrom 0.
         
-    private Boolean isCyclic(int v, int parent) 
+    private Boolean hasCycle(int v, int parent) 
     { 
         vertexes.get(v).visit();
         Integer i; 
@@ -95,7 +95,7 @@ public class Graph extends AbsGraph
          
 	    if (!vertexes.get(i).wasVisited()) 
             { 
-                if (isCyclic(i, v)) 
+                if (hasCycle(i, v)) 
                     return true; 
             } 
              
@@ -111,7 +111,7 @@ public class Graph extends AbsGraph
         if(!isConnected())
             return false;
             
-        if (isCyclic(0, -1))
+        if (hasCycle(0, -1))
             {
             unvisitVertexes();
             return false;

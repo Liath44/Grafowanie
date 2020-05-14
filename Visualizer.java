@@ -102,8 +102,7 @@ public class Visualizer extends JPanel
         if(scanner.hasNext())
             throw new RedundantCharactersInInput();
         }
-
-    //TODO: check try with resources
+        
     public void exportGraph(String path) throws IOException
         {
         filewriter = new FileWriter(path);

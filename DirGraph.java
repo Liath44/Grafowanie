@@ -65,7 +65,7 @@ public class DirGraph extends AbsGraph
         return maxdeg;
         }
 
-    public boolean isCyclic()
+    public boolean hasCycle()
         {
         for(int i = 0; i < vertexes.size(); i++)
             {
@@ -109,7 +109,7 @@ public class DirGraph extends AbsGraph
         return true;
         }
          
-    //TODO: ??????
+    //TODO: maybe?
     public boolean isTree()
         { 
         return false;
