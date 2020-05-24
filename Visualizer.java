@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 import java.io.File;
@@ -20,6 +21,83 @@ public class Visualizer extends JPanel
         {
         System.out.println("Paint graph");
 	    }
+	  
+	public String getShortestPathInfo(int v1, int v2)
+		{
+		if(v1 < 0 || v1 >= v.getVertexList().size())
+			return "Path from vertex " + v1 + " to " + v2 + ": Graph does not contain vertex " + v1;
+		if(v2 < 0 || v2 >= v.getVertexList().size())
+			return "Path from vertex " + v1 + " to " + v2 + ": Graph does not contain vertex " + v2;
+		return getShortestPathInfo(v.getVertex(v1), v.getVertex(v2));
+		}	
+	    
+	public String getShortestPathInfo(Vertex v1, Vertex v2)
+		{
+		ArrayList<Vertex> path = v.findShortestPath(v1, v2);
+		StringBuilder builder = new StringBuilder();
+		if(path == null)
+			{
+			builder.append("No path from vertex ");
+			builder.append(v1.getIndex());
+			builder.append(" to ");
+			builder.append(v2.getIndex());
+			return builder.toString();
+			}
+		builder.append("Path from vertex ");
+		builder.append(v1.getIndex());
+		builder.append(" to ");
+		builder.append(v2.getIndex());
+		builder.append(": ");
+		for(int i = path.size() - 1; i > 0; i--)
+			{
+			builder.append(path.get(i).getIndex());
+			builder.append(" -> ");
+			}
+		builder.append(path.get(0).getIndex());
+		return builder.toString();
+		}	
+	    
+	public String getGraphInfo()
+        {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Graph type: ");
+        builder.append(v.getGraphType());
+        builder.append("Number of vertexes: ");
+        builder.append(v.getVertexList().size());
+        builder.append("\n");
+        builder.append("Number of edges: ");
+        builder.append(v.getEdgeList().size());
+        builder.append("\n");
+        builder.append("Edges:\n");
+        for(AbsEdge edge: v.getEdgeList())
+            {
+            builder.append(edge.getu().getIndex());
+            builder.append(" - ");
+            builder.append(edge.getv().getIndex());
+            builder.append("\n");    
+            }
+        builder.append("Graph degree: ");
+        builder.append(v.graphDegree());
+        builder.append("\n");
+        builder.append("Number of components: ");
+        builder.append(v.findComponents().size());
+        builder.append("\n");
+        builder.append("Has cycle: ");
+        builder.append(v.hasCycle());
+        builder.append("\n");
+        builder.append("Is Eulerian: ");
+        builder.append(v.isEulerian());
+        builder.append("\n");
+        builder.append("Is complete: ");
+        builder.append(v.isComplete());
+		builder.append("\n");
+		builder.append("Is connected: ");
+		builder.append(v.isConnected());
+		builder.append("\n");
+		builder.append("Is tree: ");
+		builder.append(v.isTree());
+		return builder.toString();
+        }
 
 	/*
 	 * Turns AbsGraph v to Directed Graph
