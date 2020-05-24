@@ -4,7 +4,7 @@ public abstract class AbsGraph
     {
     protected ArrayList<Vertex> vertexes;
     protected ArrayList<AbsEdge> edges;
-    protected final int radius = 300;
+    protected final int radius = 300;//TODO: static (blok statyczny) or in constructor
 
     public Integer countVertexes()
         {
