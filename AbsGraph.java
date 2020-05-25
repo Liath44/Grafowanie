@@ -26,6 +26,17 @@ public abstract class AbsGraph
         vertexes.add(new Vertex(vertexes.size(), 0, 0));
         }
 
+    public void addEdgeStable(int ver1, int ver2) throws VertexDoesNotExist, EdgeExists
+        {
+        if(ver1 < 0 || ver1 >= vertexes.size())
+            throw new VertexDoesNotExist(ver1);
+        if(ver2 < 0 || ver2 >= vertexes.size())
+            throw new VertexDoesNotExist(ver2);
+        if(edgeExists(ver1, ver2))
+            throw new EdgeExists(ver1, ver2);
+        addEdge(ver1, ver2);
+        }
+        
     public void addEdge(int ver1, int ver2)
         {   
         addEdge(vertexes.get(ver1), vertexes.get(ver2));
@@ -48,6 +59,11 @@ public abstract class AbsGraph
             }
         }
 
+    public void removeVertex()
+        {
+        removeVertex(vertexes.size() - 1);
+        }   
+        
     public void removeVertex(int i)
         {
         vertexes.remove(i);
@@ -135,6 +151,17 @@ public abstract class AbsGraph
         {
         removeEdge(vertexes.get(ver1), vertexes.get(ver2));
         }
+        
+    public void removeEdgeStable(int ver1, int ver2) throws VertexDoesNotExist, EdgeDoesNotExist
+        {
+        if(ver1 < 0 || ver1 >= vertexes.size())
+            throw new VertexDoesNotExist(ver1);
+        if(ver2 < 0 || ver2 >= vertexes.size())
+            throw new VertexDoesNotExist(ver2);
+        if(!edgeExists(ver1, ver2))
+            throw new EdgeDoesNotExist(ver1, ver2);
+        removeEdge(ver1, ver2);
+        }
 
     public void removeEdge(Vertex ver1, Vertex ver2)
         {
@@ -163,6 +190,11 @@ public abstract class AbsGraph
         return edgeExists(edges, ver1, ver2);
         }
 
+    public boolean edgeExists(int ver1, int ver2)
+        {
+        return edgeExists(vertexes.get(ver1), vertexes.get(ver2));
+        }   
+        
     public void unvisitEdges()
         {
         for(int i = 0; i < edges.size(); i++)
@@ -318,4 +350,38 @@ public abstract class AbsGraph
         vertexes = new ArrayList<>();
         edges = new ArrayList<>();
         }
+        
+    static class VertexDoesNotExist extends Exception{
+        private final int v;
+        public VertexDoesNotExist(int v){
+            this.v = v;
+        }
+        public String getMessage(){
+            return "Vertex " + v + " does not exist.";
+        }
+    }
+    
+    static class EdgeExists extends Exception{
+        private final int ver1;
+        private final int ver2;
+        public EdgeExists(int ver1, int ver2){
+            this.ver1 = ver1;
+            this.ver2 = ver2;
+        }
+        public String getMessage(){
+            return "Edge between vertexes " + ver1 + " and " + ver2 + " already exists.";
+        }
+    }
+    
+    static class EdgeDoesNotExist extends Exception{
+        private final int ver1;
+        private final int ver2;
+        public EdgeDoesNotExist(int ver1, int ver2){
+            this.ver1 = ver1;
+            this.ver2 = ver2;
+        }
+        public String getMessage(){
+            return "Edge between vertexes " + ver1 + " and " + ver2 + " does not exist.";
+        }
+    }
     }

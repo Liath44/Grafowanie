@@ -121,9 +121,15 @@ public class Visualizer extends JPanel
             }
         }
 
-    private void initializeGraph(String graphtype, int novertexes, int noedges)
+    public void turnToComplementGraph()
+        {
+        v = v.findComplementGraph();
+        }
+        
+    private AbsGraph initializeGraph(String graphtype, int novertexes, int noedges)
     throws WrongNumberOfVertexes, WrongNumberOfEdges, GraphTypeWronglySpecified
         {
+        AbsGraph v;
         if(novertexes <= 0)
             throw new WrongNumberOfVertexes(novertexes);
         if(noedges < 0)
@@ -139,9 +145,10 @@ public class Visualizer extends JPanel
             Vertex vertex = new Vertex(i, novertexes);
             v.addVertex(vertex);
             }
+        return v;
         }
 
-    private void initializeEdge(int ver1, int ver2, int novertexes, int i)
+    private void initializeEdge(AbsGraph v, int ver1, int ver2, int novertexes, int i)
     throws WrongEdgesInput, DuplicatedEdges
         {
         if(ver1 >= novertexes || ver2 >= novertexes || ver1 < 0 || ver2 < 0)
@@ -156,7 +163,14 @@ public class Visualizer extends JPanel
     WrongNumberOfVertexes, WrongNumberOfEdges, GraphTypeWronglySpecified, WrongEdgesInput, DuplicatedEdges,
     RedundantCharactersInInput
         {
-        scanner = new Scanner(new File(path));
+        try    
+            {
+            scanner = new Scanner(new File(path));
+            }
+        catch(FileNotFoundException e)
+            {   
+            throw new FileNotFoundException("File " + path + " does not exist");
+            }
         if(!scanner.hasNext())
             throw new NoGraphTypeGiven();
         String graphtype = scanner.next();
@@ -166,7 +180,7 @@ public class Visualizer extends JPanel
         if(!scanner.hasNextInt())
             throw new NoNumberOfEdgesGiven();
         int noedges = scanner.nextInt();
-        initializeGraph(graphtype, novertexes, noedges);
+        AbsGraph v = initializeGraph(graphtype, novertexes, noedges);
         for(int i = 0; i < noedges; i++)
             {
             if(!scanner.hasNextInt())
@@ -175,10 +189,11 @@ public class Visualizer extends JPanel
             if(!scanner.hasNextInt())
                 throw new WrongEdgesInput(i);
             int ver2 = scanner.nextInt();
-            initializeEdge(ver1, ver2, novertexes, i);
+            initializeEdge(v, ver1, ver2, novertexes, i);
             }
         if(scanner.hasNext())
             throw new RedundantCharactersInInput();
+        this.v = v;
         }
         
     public void exportGraph(String path) throws IOException
@@ -232,8 +247,8 @@ public class Visualizer extends JPanel
             super();
             this.n = n;
         }
-        public int getn(){
-            return n;
+        public String getMessage() {
+           return "<html>Number of vertexes should be > 0<br/>Number of vertexes given: " + n + "</html>"; 
         }
     }
     static class WrongNumberOfEdges extends Exception{
@@ -242,8 +257,8 @@ public class Visualizer extends JPanel
             super();
             this.n = n;
         }
-        public int getn(){
-            return n;
+        public String getMessage(){
+            return "<html>Number of edges should be >= 0<br/>Number of edges given: " + n + "</html>";
         }
     }
     static class GraphTypeWronglySpecified extends Exception{
@@ -252,8 +267,8 @@ public class Visualizer extends JPanel
             super();
             notgraphtype = ngt;
         }
-        public String getNotGraphType(){
-            return notgraphtype;
+        public String getMessage(){
+            return "<html>Graph type is specified by S/D.<br/>String given: " + notgraphtype+ "</html>";
         }
     }
     static class WrongEdgesInput extends Exception{
@@ -261,8 +276,10 @@ public class Visualizer extends JPanel
         public WrongEdgesInput(int edge){
             this.edge = edge;
         }
-        public int getEdge(){
-            return edge;
+        public String getMessage(){
+            return "<html>In input files edge is interpreted by pair of integers.<br/>" +
+                    "Each integer should be a number from 0 to n-1 where n is number of vertexes.<br/>" +
+                    "Index of wrongly formated edge: " + edge + "</html>";
         }
     }
     static class DuplicatedEdges extends Exception{
@@ -270,12 +287,28 @@ public class Visualizer extends JPanel
         public DuplicatedEdges(int edge){
             this.edge = edge;
         }
-        public int getEdge(){
-            return edge;
+        public String getMessage(){
+            return "<html>File should not contain duplicated edges.<br/>Index of duplicated edge: " + edge + "</html>";
         }
     }
-    static class NoGraphTypeGiven extends Exception{}
-    static class NoNumberOfVertexesGiven extends Exception{}
-    static class NoNumberOfEdgesGiven extends Exception{}
-    static class RedundantCharactersInInput extends Exception{}
+    static class NoGraphTypeGiven extends Exception{
+        public String getMessage(){
+            return "Graph type was not given in file";
+        }
+    }
+    static class NoNumberOfVertexesGiven extends Exception{
+        public String getMessage(){
+            return "Number of vertexes was not given in file";
+        }
+    }
+    static class NoNumberOfEdgesGiven extends Exception{
+        public String getMessage(){
+            return "Number of edges was not given in file";
+        }
+    }
+    static class RedundantCharactersInInput extends Exception{
+        public String getMessage(){
+            return "Redundant characters at the end of file were found";
+        }
+    }
     }
