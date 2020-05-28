@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 
 public class AddVertexButton extends JButton implements ActionListener
 	{
-	private Visualizer visualizer;
-	private VertexNumberPanel vnp;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final VertexNumberPanel vnp;
+	private final PrevStatusPanel psp;
 		
 	public void actionPerformed(ActionEvent e)
 		{

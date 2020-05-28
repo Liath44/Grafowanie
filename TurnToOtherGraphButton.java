@@ -4,8 +4,8 @@ import java.awt.event.ActionListener;
 
 public class TurnToOtherGraphButton extends JButton implements ActionListener
 	{
-	private Visualizer visualizer;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final PrevStatusPanel psp;
 	
 	public TurnToOtherGraphButton(Visualizer visualizer, PrevStatusPanel psp)
 		{

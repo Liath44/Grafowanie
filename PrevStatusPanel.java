@@ -4,7 +4,7 @@ import java.awt.*;
 public class PrevStatusPanel extends JPanel
 	{
 	private final static JLabel INITMESSAGE = new JLabel("Previous status: ");
-	private JLabel status;
+	private final JLabel status;
 	private final static Color OKCOLOR = Color.GREEN.darker();
 	private final static Color ERRORCOLOR = Color.RED;
 	
@@ -26,5 +26,11 @@ public class PrevStatusPanel extends JPanel
 		{
 		status.setForeground(OKCOLOR);
 		status.setText("OK");
+		}
+		
+	public void showComplement()
+		{
+		status.setForeground(OKCOLOR);
+		status.setText("Your hair looks fresh today ;)");
 		}
 	}

@@ -21,6 +21,26 @@ public class Visualizer extends JPanel
         {
         System.out.println("Paint graph");
 	    }
+	    
+	public boolean getIndexes()
+        {   
+        return indexes;
+        }
+        
+    public boolean getTreeview()
+        {
+        return treeview;
+        }   
+        
+    public void setIndexes(boolean indexes)
+        {
+        this.indexes = indexes;
+        }
+        
+    public void setTreeview(boolean treeview)
+        {
+        this.treeview = treeview;
+        }
 	  
 	public String getShortestPathInfo(int v1, int v2)
 		{
@@ -55,8 +75,50 @@ public class Visualizer extends JPanel
 			}
 		builder.append(path.get(0).getIndex());
 		return builder.toString();
-		}	
-	    
+		}
+
+    public String getGraphInfoHTML() throws EmptyGraph
+        {
+        if(v.countVertexes() == 0)
+            throw new EmptyGraph();
+        StringBuilder builder = new StringBuilder();
+        builder.append("<html>");
+        builder.append("Graph type: ");
+        if(v.getGraphType().equals("S\n"))
+            builder.append("S");
+        else
+            builder.append("D");
+        builder.append("<br/>");
+        builder.append("Number of vertexes: ");
+        builder.append(v.getVertexList().size());
+        builder.append("<br/>");
+        builder.append("Number of edges: ");
+        builder.append(v.getEdgeList().size());
+        builder.append("<br/>");
+        builder.append("Graph degree: ");
+        builder.append(v.graphDegree());
+        builder.append("<br/>");
+        builder.append("Number of components: ");
+        builder.append(v.findComponents().size());
+        builder.append("<br/>");
+        builder.append("Has cycle: ");
+        builder.append(v.hasCycle());
+        builder.append("<br/>");
+        builder.append("Is Eulerian: ");
+        builder.append(v.isEulerian());
+        builder.append("<br/>");
+        builder.append("Is complete: ");
+        builder.append(v.isComplete());
+        builder.append("<br/>");
+        builder.append("Is connected: ");
+        builder.append(v.isConnected());
+        builder.append("<br/>");
+        builder.append("Is tree: ");
+        builder.append(v.isTree());
+        builder.append("</html>");
+        return builder.toString();
+        }	
+		
 	public String getGraphInfo()
         {
         StringBuilder builder = new StringBuilder();
@@ -309,6 +371,11 @@ public class Visualizer extends JPanel
     static class RedundantCharactersInInput extends Exception{
         public String getMessage(){
             return "Redundant characters at the end of file were found";
+        }
+    }
+    static class EmptyGraph extends Exception{
+        public String getMessage(){
+            return "Graph is empty.";
         }
     }
     }

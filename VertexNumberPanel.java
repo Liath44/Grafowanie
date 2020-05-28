@@ -2,8 +2,8 @@ import javax.swing.*;
 
 public class VertexNumberPanel extends JPanel
 	{
-	private Visualizer visualizer;
-	private JLabel text;
+	private final Visualizer visualizer;
+	private final JLabel text;
 	
 	public VertexNumberPanel(Visualizer visualizer)
 		{

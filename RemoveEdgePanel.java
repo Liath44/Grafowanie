@@ -5,18 +5,21 @@ import java.awt.event.ActionListener;
 
 public class RemoveEdgePanel extends JPanel implements ActionListener
 	{
-	private Visualizer visualizer;
-	private JTextField ver1;
-	private JTextField ver2;
-	private JButton removeedgebutton;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final JTextField ver1;
+	private final JTextField ver2;
+	private final JButton removeedgebutton;
+	private final PrevStatusPanel psp;
 
 	public RemoveEdgePanel(Visualizer visualizer, PrevStatusPanel psp)
 		{
 		super();
 		this.visualizer = visualizer;
 		this.psp = psp;
-		setLayout(new GridBagLayout());
+		FlowLayout layout = new FlowLayout();
+		layout.setVgap(0);
+		layout.setHgap(5);
+		setLayout(layout);
 		JLabel ver1label = new JLabel("ver1: ");
 		JLabel ver2label = new JLabel("ver2: ");
 		ver1 = new JTextField(3);

@@ -4,8 +4,8 @@ import java.awt.event.ActionListener;
 
 public class ComplementGraphButton extends JButton implements ActionListener
 	{
-	private Visualizer visualizer;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final PrevStatusPanel psp;
 	
 	public ComplementGraphButton(Visualizer visualizer, PrevStatusPanel psp)
 		{
@@ -18,6 +18,6 @@ public class ComplementGraphButton extends JButton implements ActionListener
 	public void actionPerformed(ActionEvent e)
 		{
 		visualizer.turnToComplementGraph();
-		psp.showOK();
+		psp.showComplement();
 		}
 	}

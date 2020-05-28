@@ -5,23 +5,26 @@ import java.awt.*;
 
 public class AddEdgePanel extends JPanel implements ActionListener
 	{
-	private Visualizer visualizer;
-	private JTextField ver1;
-	private JTextField ver2;
-	private JButton addedgebutton;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final JTextField ver1;
+	private final JTextField ver2;
+	private final JButton addedgebutton;
+	private final PrevStatusPanel psp;
 	
 	public AddEdgePanel(Visualizer visualizer, PrevStatusPanel psp)
 		{
 		super();
 		this.visualizer = visualizer;
 		this.psp = psp;
-		setLayout(new GridBagLayout());
+		FlowLayout layout = new FlowLayout();
+		layout.setVgap(0);
+		layout.setHgap(5);
+		setLayout(layout);
 		JLabel ver1label = new JLabel("ver1: ");
 		JLabel ver2label = new JLabel("ver2: ");
 		ver1 = new JTextField(3);
 		ver2 = new JTextField(3);
-		addedgebutton = new JButton("add edge");
+		addedgebutton = new JButton("   add edge   ");
 		addedgebutton.addActionListener(this);
 		add(ver1label);
 		add(ver1);

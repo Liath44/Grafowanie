@@ -1,16 +1,16 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ErrorFrame extends JFrame
+public class PrintInfoFrame extends JFrame
 	{
 	private final String message;
 	
-	public ErrorFrame(String message)
+	public PrintInfoFrame(String message)
 		{
-		super("ERROR");
+		super("graph info");
 		this.message = message;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(600, 100);
+		setSize(230, 200);
 		setLayout(new GridBagLayout());
 		JLabel text = new JLabel(message);
 		text.setVerticalAlignment(JLabel.CENTER);

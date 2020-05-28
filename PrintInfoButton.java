@@ -1,17 +1,38 @@
 import javax.swing.JButton;
+import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class PrintInfoButton extends JButton implements ActionListener
 	{
-	private Visualizer visualizer;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final PrevStatusPanel psp;
 
-	public void actionPerformed(ActionEvent e)
+	public void actionPerformed(ActionEvent action)
 		{
-		System.out.println(visualizer.getGraphInfo());
-		System.out.print("\n");
-		psp.showOK();
+		try
+			{
+			String message = visualizer.getGraphInfoHTML();
+			psp.showOK();
+			EventQueue.invokeLater(new Runnable()
+				{
+				public void run()
+					{
+					new PrintInfoFrame(message);
+					}
+				});
+			}
+		catch(Exception e)
+			{
+			psp.showError();
+			EventQueue.invokeLater(new Runnable()
+				{
+				public void run()
+					{
+					new ErrorFrame(e.getMessage());
+					}
+				});
+			}
 		}
 
 		

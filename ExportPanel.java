@@ -5,17 +5,20 @@ import java.awt.event.ActionListener;
 
 public class ExportPanel extends JPanel implements ActionListener
 	{
-	private Visualizer visualizer;
-	private JTextField exportfield;
-	private JButton exportbutton;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final JTextField exportfield;
+	private final JButton exportbutton;
+	private final PrevStatusPanel psp;
 
 	public ExportPanel(Visualizer visualizer, PrevStatusPanel psp)
 		{
 		super();
 		this.visualizer = visualizer;
 		this.psp = psp;
-		setLayout(new GridBagLayout());
+		FlowLayout layout = new FlowLayout();
+		layout.setVgap(0);
+		layout.setHgap(5);
+		setLayout(layout);
 		JLabel label = new JLabel("export graph: ");
 		exportfield = new JTextField(16);
 		exportbutton = new JButton("export");

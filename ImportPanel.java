@@ -5,11 +5,11 @@ import java.awt.event.ActionListener;
 
 public class ImportPanel extends JPanel implements ActionListener 
 	{
-	private Visualizer visualizer;
-	private JTextField importfield;
-	private JButton importbutton;
-	private VertexNumberPanel vnp;
-	private PrevStatusPanel psp;
+	private final Visualizer visualizer;
+	private final JTextField importfield;
+	private final JButton importbutton;
+	private final VertexNumberPanel vnp;
+	private final PrevStatusPanel psp;
 	
 	public ImportPanel(Visualizer visualizer, VertexNumberPanel vnp, PrevStatusPanel psp)
 		{
@@ -17,7 +17,10 @@ public class ImportPanel extends JPanel implements ActionListener
 		this.visualizer = visualizer;
 		this.vnp = vnp;
 		this.psp = psp;
-		setLayout(new GridBagLayout());
+		FlowLayout layout = new FlowLayout();
+		layout.setVgap(0);
+		layout.setHgap(5);
+		setLayout(layout);
 		JLabel label = new JLabel("import graph: ");
 		importfield = new JTextField(16);
 		importbutton = new JButton("import");
