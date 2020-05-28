@@ -1,10 +1,25 @@
 import java.util.*;
+import java.awt.Graphics;
+
 
 public abstract class AbsGraph
     {
     protected ArrayList<Vertex> vertexes;
     protected ArrayList<AbsEdge> edges;
-    protected final int radius = 300;//TODO: static (blok statyczny) or in constructor
+    protected final int radius = 100;//TODO: static (blok statyczny) or in constructor
+
+
+	public void paintComponent(Graphics g, Visualizer v)
+        {
+		for(int i=0; i<vertexes.size(); i++){
+			vertexes.get(i).setCircleCoordinates(vertexes.size());
+			vertexes.get(i).paintComponent(g,v);
+		}
+		for(int i=0; i<edges.size(); i++){
+			edges.get(i).paintComponent(g,v);
+		}
+	    }
+
 
     public Integer countVertexes()
         {

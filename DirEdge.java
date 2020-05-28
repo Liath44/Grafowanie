@@ -12,8 +12,9 @@ public class DirEdge extends AbsEdge
         return u.equals(ver1) && v.equals(ver2);
         }
 
-    public void paintComponent(Graphics graphics, Visualizer vis, AbsGraph v)
+    public void paintComponent(Graphics graphics, Visualizer vis)
         {
-        System.out.println("Directed edge");
+        //System.out.println("Directed edge");
+        graphics.drawLine(u.getx(), u.gety(), v.getx(), v.gety());
         }
     }

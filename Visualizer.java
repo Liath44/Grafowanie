@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.Scanner;
 import java.io.File;
 import java.awt.Graphics;
+import java.awt.Color;
+import java.awt.Dimension;
 
 public class Visualizer extends JPanel
     {
@@ -19,7 +21,14 @@ public class Visualizer extends JPanel
 
 	public void paintComponent(Graphics g)
         {
-        System.out.println("Paint graph");
+        //System.out.println("Painting graph");
+        g.setColor(Color.white);
+		g.fillRect(0, 0, getWidth(), getHeight());
+														//translacja żeby 0,0 było na środku
+        g.translate(150, 150);
+		g.setColor(Color.black);						//kolor pędzla
+
+		v.paintComponent(g, this);						//przekazujemy pędzel wierzchołkom i każemy się narysować
 	    }
 	    
 	public boolean getIndexes()
@@ -85,9 +94,9 @@ public class Visualizer extends JPanel
         builder.append("<html>");
         builder.append("Graph type: ");
         if(v.getGraphType().equals("S\n"))
-            builder.append("S");
+            builder.append("Straight");
         else
-            builder.append("D");
+            builder.append("Directed");
         builder.append("<br/>");
         builder.append("Number of vertexes: ");
         builder.append(v.getVertexList().size());
@@ -378,4 +387,5 @@ public class Visualizer extends JPanel
             return "Graph is empty.";
         }
     }
+    
     }

@@ -6,7 +6,7 @@ public class Vertex
 	private int x;
 	private int y;
 	private boolean wasvisited;
-	private final int dotsize = 3;
+	private final int dotsize = 5;
 	private int index;
 	private	ArrayList<Vertex> neighbours = new ArrayList<>();
 
@@ -49,9 +49,11 @@ public class Vertex
 
     public void paintComponent(Graphics g, Visualizer visualizer)
         {
+		//System.out.println(x);
+		//System.out.println(y);
         Graphics2D g2d = (Graphics2D) g;
         g2d.fillOval(x-dotsize/2, y-dotsize/2, dotsize, dotsize);
-        //g2d.drawString(Integer.toString(index), x+size/2, y-size);		//indeksy wierzcholkow
+        //g2d.drawString(Integer.toString(index), x+dotsize/2, y-dotsize);		//indeksy wierzcholkow
         }
 
     public boolean equals(Vertex ver)
@@ -61,8 +63,8 @@ public class Vertex
 
     public void setCircleCoordinates(int novertexes)
         {
-        x = (int)(Math.cos(2*Math.PI/novertexes*(index))*300);
-        y = (int)(Math.sin(2*Math.PI/novertexes*(index))*300);
+        x = (int)(Math.cos(2*Math.PI/novertexes*(index))*100);
+        y = (int)(Math.sin(2*Math.PI/novertexes*(index))*100);
         }
 
     public Vertex getNeighbour(int i)
@@ -74,6 +76,14 @@ public class Vertex
         {
         return neighbours.size();
         }
+    public int getx()
+		{
+			return x;
+		}
+	public int gety()
+		{
+			return y;
+		}
 
     public void visit()
         {
